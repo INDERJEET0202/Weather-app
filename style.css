@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:200,300,400,700,900&display=swap');
 
 :root {
-    --gradient: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
+    --gradient: linear-gradient(135deg, #6fa0ee 10%, #a251e5 100%);
     --bg-color: #343d4b;
     --bg-color--card: #222831;
 
@@ -12,13 +12,24 @@
     --page-size: 125%;
 }
 
+@keyframes bg-animation{
+    0%{
+      background-position: left;
+    }
+    100%{
+      background-position: right;
+    }
+  }
+
 body {
     width: 100%; 
     height: 100vh;
     font-family: 'Montserrat', sans-serif;
     background-color: var(--bg-color);
-    /* background-image: url("thunder5405__480.jpg"); */
+    background-image: linear-gradient(45deg, #5b00d3, #222831);
     background-repeat: no-repeat;
+    background-size: 400%;
+    animation: bg-animation 4s infinite alternate;
     color: var(--main-text-color);
 }
 
@@ -26,7 +37,8 @@ body {
     border-radius: var(--main-border-radius);
     -webkit-box-shadow: 0 0 70px -10px rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 70px -10px rgba(0, 0, 0, 0.2);
-    background-color: var(--bg-color--card);
+    /* background-color: var(--bg-color--card); */
+    background-color: transparent;
     color: var(--main-text-color);
     width: 85%;
     max-width: 675px;
@@ -160,7 +172,8 @@ body {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: var(--bg-color);
-    color: white;
+    /* background-color: var(--bg-color); */
+    background-color: transparent;
+    color: var(--main-text-color);
     text-align: center;
   }
