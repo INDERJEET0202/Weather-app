@@ -8,27 +8,31 @@
  *  5. Add error/loading states and cover edge use cases
  *
  */
-
-class fetchForecastApi{
-    constructor(){
-        this.baseApiUrl = 'https://www.metaweather.com/api/location/';
+ class fetchForecastApi {
+    constructor() {
+        this.baseApiUrl = 'https://www.metaweather.com/api/location';
         this.searchApiUrl = `${this.baseApiUrl}/search`;
         this.addCorsHeader();
     }
-    addCorsHeader(){
+
+    addCorsHeader() {
         $.ajaxPrefilter(options => {
-            if(options.crossDomain && jQuery.support.cors){
-                options.url = 'http://the-ultimate-api-challenge.herokuapp.com/' + options.url;
+            if (options.crossDomain && $.support.cors) {
+                options.url = 'https://the-ultimate-api-challenge.herokuapp.com/' + options.url;
             }
         });
     }
 
-    getLocation(query, callback){
-        $.getJSON(this.searchApiUrl, {query}).done(data => callback(data)).fail(() => callback(null));
+    getLocation(query, callback) {
+        $.getJSON(this.searchApiUrl, { query })
+            .done(data => callback(data))
+            .fail(() => callback(null));
     }
 
-    getWeatherData(location, callback){
-        $.getJSON(`${this.baseApiUrl}/${location}`).done(data => callback(data)).fail(() => callback(null));
+    getWeatherData(location, callback) {
+        $.getJSON(`${this.baseApiUrl}/${location}`)
+            .done(data => callback(data))
+            .fail(() => callback(null));
     }
 }
 
@@ -84,7 +88,7 @@ class displayForecast {
     }
     showTodaysForecastDetails({ name, value, unit }) {
         $(`#forecast-details`).append(`
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between" style = "padding : 10px">
                 <span class="font-weight-bolder">${name}</span>
                 <span>${value} ${unit}</span>
             </div>
@@ -108,7 +112,6 @@ class displayForecast {
         $('#forecast-card-description').html(forecast.weatherState);
     }
 }
-
 
 class dataMiddleware {
     constructor() {
@@ -214,59 +217,54 @@ class dataMiddleware {
         });
     }
 }
-
-
-class requestController{
-    constructor(){
+class requestController {
+    constructor() {
         this.fetchForecastApi = new fetchForecastApi();
         this.coreDomElements = new coreDomElements();
         this.dataMiddleware = new dataMiddleware();
         this.registerEventListener();
-        // this.init();
     }
 
-    showRequestInProgress(){
+    showRequestInProgress() {
         this.coreDomElements.showLoader();
         this.coreDomElements.hideSearchBox();
     }
 
-    getQuery(){
+    getQuery() {
         return $('#search-query').val().trim();
     }
-    // init(){
-    //     this.fetchForecastApi.getLocation();
-    // }
 
-    fetchWeather(query){
-        this.fetchForecastApi.getLocation(query, (location) => {
-            if(!location || location.length === 0) {
-                this.coreDomElements.showError('Location not found, please try again');
+    fetchWeather(query) {
+        this.fetchForecastApi.getLocation(query, location => {
+            if (!location || location.length === 0) {
+                this.coreDomElements.showError('Could not find this location, please try again.');
                 return;
             }
-            this.fetchForecastApi.getWeatherData(location[0].woeid, (data) => {
-                if(!data){
-                    this.coreDomElements.showError('Something went wrong, please try again later');
+
+            this.fetchForecastApi.getWeatherData(location[0].woeid, data => {
+                if (!data) {
+                    this.coreDomElements.showError('Could not proceed with the request, please try again later.');
                     return;
                 }
 
-                this.dataMiddleware.prepareDataForDom(data)
+                this.dataMiddleware.prepareDataForDom(data);
             });
         });
     }
 
-    onSubmit(){
+    onSubmit() {
         const query = this.getQuery();
-        if(!query) return;
+        if (!query) return;
 
         this.showRequestInProgress();
         this.fetchWeather(query);
     }
 
-    registerEventListener(){
-        this.coreDomElements.searchForm.on('submit', (e) => {
+    registerEventListener() {
+        this.coreDomElements.searchForm.on('submit', e => {
             e.preventDefault();
             this.onSubmit();
-        })
+        });
     }
 }
 
