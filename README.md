@@ -1,7 +1,7 @@
 # Weather API
 
 ---
-
+<!-- 
 <div>
 <b>Quick menu:</b>
 <a href="https://theultimateapichallenge.com/weather-api" target="_blank" rel="noopener noreferrer"
@@ -25,7 +25,7 @@
     border-radius:10px;
     font-size:0.85rem;
     font-weight:600;">YouTube Video</a> 
-</div>
+</div> -->
 
 ---
 
